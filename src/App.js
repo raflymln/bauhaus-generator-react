@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { BiDownArrowCircle, BiPlus } from "react-icons/bi";
+import { BiDownArrowCircle, BiPlus, BiCopy } from "react-icons/bi";
 import ColorInput from "./components/ColorInput";
 import InputLabel from "./components/InputLabel";
 import NumericalInput from "./components/NumericalInput";
@@ -165,6 +165,11 @@ function App() {
     fileDownload("output.svg", svg);
   };
 
+  const copySVG = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(svg);
+  }
+
   // Initialize file input and read json file contents
   const readConfig = (e) => {
     const file = e.target.files[0];
@@ -310,6 +315,14 @@ function App() {
                   onClick={(e) => downloadSVG(e)}
                 >
                   <BiDownArrowCircle />
+                </button>
+              ) : null}
+              {svg ? (
+                <button
+                  className="w-10 h-10 bg-gray-700 rounded-md text-white hover:bg-gray-500 text-2xl flex items-center justify-center"
+                  onClick={(e) => copySVG(e)}
+                >
+                  <BiCopy />
                 </button>
               ) : null}
             </div>
