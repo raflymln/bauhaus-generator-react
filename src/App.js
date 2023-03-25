@@ -41,6 +41,7 @@ function App() {
       : ["D4D4D4"]
   );
   const [svg, setSvg] = useState(null);
+  const [copiedTimeout, setCopiedTimeout] = useState(null);
   const svgWrapperRef = useRef();
   const fileReader = useRef(null);
   const [error, setError] = useState(false);
@@ -168,6 +169,16 @@ function App() {
   const copySVG = (e) => {
     e.preventDefault();
     navigator.clipboard.writeText(svg);
+
+    if (copiedTimeout) {
+      clearTimeout(copiedTimeout);
+    }
+
+    const timeout = setTimeout(() => {
+      setCopiedTimeout(null);
+    }, 1000);
+
+    setCopiedTimeout(timeout);
   }
 
   // Initialize file input and read json file contents
@@ -250,9 +261,18 @@ function App() {
             >
               @Kerbodine
             </a>
+            {" & "}
+            <a
+              href="https://www.raflymaulana.me/"
+              target="_blank"
+              rel="noreferrer"
+              className="p-1 underline rounded-md hover:bg-gray-700 hover:text-white"
+            >
+              @raflymln
+            </a>
             {" | "}
             <a
-              href="https://github.com/Kerbodine/bauhaus-generator-react"
+              href="https://github.com/raflymln/bauhaus-generator-react"
               target="_blank"
               rel="noreferrer"
               className="p-1 underline rounded-md hover:bg-gray-700 hover:text-white"
@@ -319,7 +339,10 @@ function App() {
               ) : null}
               {svg ? (
                 <button
-                  className="w-10 h-10 bg-gray-700 rounded-md text-white hover:bg-gray-500 text-2xl flex items-center justify-center"
+                  className={`
+                    w-10 h-10 rounded-md text-2xl flex items-center justify-center 
+                    ${copiedTimeout ? "border-gray-700 border-2 hover:opacity-50 text-gray-700" : "bg-gray-700 hover:bg-gray-500 text-white"}
+                  `}
                   onClick={(e) => copySVG(e)}
                 >
                   <BiCopy />
